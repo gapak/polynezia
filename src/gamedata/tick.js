@@ -163,7 +163,7 @@ export default function tick(state) {
     // attract new people
     if ((state.bonfire > 0 || state.house > 0 || state.moai > 0) && state.population < ((state.hut * 2) + (state.house * 4))) {
         let pro = 1 + state.bonfire + (2 * state.house) + (10 * state.moai);
-        let contra = (50 * state.population);
+        let contra = (25 * state.population);
         let ratio = Math.floor(contra / pro);
         let top = 30 + ratio;
         let chance = _.random(1, top);

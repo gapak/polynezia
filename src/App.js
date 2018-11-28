@@ -6,7 +6,9 @@ import './css/conponents.css';
 import './css/tooltip.css';
 import './css/footer.css';
 
-import {starter_pack, mother_island, fast_island, island_types, resources, items, goods, ships, buildings} from './gamedata/knowledge';
+import {starter_pack, mother_island, fast_island, island_types, resources, items, goods, ships} from './gamedata/knowledge';
+import {technologies} from './gamedata/technologies';
+import {buildings} from './gamedata/buildings';
 import {professions} from './gamedata/professions';
 import {storylines} from './gamedata/storylines';
 import StorylineTool from './engine/StorylineTool';
@@ -640,7 +642,7 @@ class App extends Component {
                                                             || this.state[building_key] > 0
                                                             ?
                                                             <div className="building-container"
-                                                                 title={buildings[building_key].text + ' Cost: ' + this.drawCost(buildings[building_key].cost)}
+                                                                 title={buildings[building_key].text + '. Cost: ' + this.drawCost(buildings[building_key].cost)}
                                                                  style={{backgroundImage: 'url(/buildings/' + building_key + '.jpg)'}}
                                                                  key={building_key}>
 
@@ -650,7 +652,7 @@ class App extends Component {
                                                                               className={classNames('badge', 'filament', 'bg-' + buildings[building_key].build_on)}> {this.state[building_key] ? this.state[building_key] : null} </span>
 
                                                                         { !this.lockedTill(buildings[building_key].locked_till) ?
-                                                                             make_buy_button(building_key, buildings[building_key].name, buildings[building_key].text + ' Cost: ' + this.drawCost(buildings[building_key].cost)) : null }
+                                                                             make_buy_button(building_key, buildings[building_key].name, buildings[building_key].text + (buildings[building_key].technologies.length ? '. Technologies: ' + buildings[building_key].technologies.join(', ') : ". No Tech ") + ' Cost: ' + this.drawCost(buildings[building_key].cost)) : null }
                                                                         {this.state[building_key] > 0 ? make_button(building_key + '_del', 'del',
                                                                             () => {
                                                                                 this.ruin(building_key, 'buildings');
@@ -840,7 +842,7 @@ class App extends Component {
                                                     : ''
                                             })}
                                             {_.keys(items).map((item_key) => {
-                                                return this.state[item_key] > 0
+                                                return !this.lockedTill(items[item_key].locked_till) || this.state[item_key] > 0
                                                     ? <div className={classNames('titled', items[item_key].style)} title={items[item_key].text}
                                                            key={item_key}> {items[item_key].name}: {this.state[item_key]}</div> : ''
                                             })}
